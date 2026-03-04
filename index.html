@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GüvenTur • Güvenli Tatil Rezervasyonları</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:wght@700&amp;display=swap');
+        
+        :root {
+            --primary: 234 179 8;
+        }
+        .tail-container {
+            font-family: 'Inter', system_ui, sans-serif;
+        }
+        .logo-font {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .hero-bg {
+            background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.75)), url('https://picsum.photos/id/1015/1920/1080') center/cover no-repeat;
+        }
+        
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-hover:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.4);
+        }
+        
+        .secure-badge {
+            background: linear-gradient(90deg, #18181b, #27272a);
+        }
+        
+        .modal {
+            animation: modalPop 0.3s ease forwards;
+        }
+        @keyframes modalPop {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: rgb(234 179 8);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover:after {
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="tail-container bg-zinc-950 text-zinc-200 dark">
+    <!-- NAVBAR -->
+    <nav class="bg-zinc-950 border-b border-zinc-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+            <!-- Logo -->
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-yellow-500 rounded-2xl flex items-center justify-center text-zinc-950 font-bold text-3xl shadow-inner">G</div>
+                <div>
+                    <span class="logo-font text-3xl font-bold tracking-tighter text-white">Güven</span>
+                    <span class="logo-font text-3xl font-bold tracking-tighter text-yellow-400">Tur</span>
+                </div>
+            </div>
+
+            <!-- Menu -->
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium">
+                <a href="#" onclick="smoothScroll('hotels')" class="nav-link text-zinc-300 hover:text-white">Oteller</a>
+                <a href="#" onclick="smoothScroll('villas')" class="nav-link text-zinc-300 hover:text-white">Villalar &amp; Bungalovlar</a>
+                <a href="#" class="nav-link text-zinc-300 hover:text-white">Destinasyonlar</a>
+                <a href="#" class="nav-link text-zinc-300 hover:text-white">Kampanyalar</a>
+                <a href="#" class="nav-link text-zinc-300 hover:text-white">İletişim</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <!-- Tema Değiştir Butonu -->
+                <button onclick="toggleTheme()" 
+                        class="w-10 h-10 flex items-center justify-center rounded-2xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 transition-colors text-xl">
+                    <i id="theme-icon" class="fa-solid fa-moon"></i>
+                </button>
+
+                <!-- Güvenli Giriş -->
+                <button onclick="alert('Giriş yapıldı! (Demo)')" 
+                        class="flex items-center gap-2 px-5 py-2.5 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded-3xl text-sm font-medium transition-all">
+                    <i class="fa-solid fa-lock text-yellow-400"></i>
+                    <span>Giriş Yap</span>
+                </button>
+
+                <button onclick="showBookingModal()" 
+                        class="flex items-center gap-2 px-6 py-2.5 bg-yellow-400 hover:bg-yellow-300 text-zinc-950 font-semibold rounded-3xl text-sm transition-all shadow-lg shadow-yellow-500/30">
+                    HEMEN REZERVE ET
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <header class="hero-bg h-screen flex items-center relative">
+        <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+            <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-6 py-2 rounded-3xl text-sm mb-6 border border-white/20">
+                <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                <span class="font-medium">256-Bit SSL ile %100 Güvenli</span>
+            </div>
+            
+            <h1 class="text-6xl md:text-7xl font-bold leading-none tracking-tighter text-white mb-4">
+                TÜRKİYE'NİN<br>EN GÜVENLİ<br>TATİL SİTESİ
+            </h1>
+            <p class="text-xl text-zinc-300 max-w-lg mx-auto mb-10">
+                Etstur kalitesinde, tamamen bağımsız otel ve villa reklamları.<br>
+                Sen seç, biz güvence altına alalım.
+            </p>
+            
+            <!-- Arama Kutusu -->
+            <div class="max-w-2xl mx-auto bg-white/10 backdrop-blur-2xl p-2 rounded-3xl border border-white/30">
+                <div class="bg-zinc-900 rounded-3xl p-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="text-xs text-zinc-400 block mb-1">Nereye gidiyorsun?</label>
+                        <input type="text" id="search-dest" 
+                               class="w-full bg-transparent border-0 focus:outline-none text-lg placeholder-zinc-500" 
+                               placeholder="Antalya, Bodrum...">
+                    </div>
+                    <div>
+                        <label class="text-xs text-zinc-400 block mb-1">Giriş - Çıkış</label>
+                        <input type="text" value="15-22 Mart 2026" 
+                               class="w-full bg-transparent border-0 focus:outline-none text-lg">
+                    </div>
+                    <div class="flex items-end">
+                        <button onclick="searchHotels()" 
+                                class="w-full bg-yellow-400 hover:bg-yellow-300 text-zinc-950 font-semibold py-4 rounded-3xl text-lg transition-all">
+                            ARA
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 flex justify-center gap-8 text-sm">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-shield-halved text-yellow-400"></i>
+                    <span>7/24 Güvenlik Ekibi</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-credit-card text-yellow-400"></i>
+                    <span>Güvenli Ödeme</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-star text-yellow-400"></i>
+                    <span>4.98 Ortalama Puan</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center text-xs tracking-widest">
+            <div class="animate-bounce">↓</div>
+            <span class="mt-2">Aşağı kaydır</span>
+        </div>
+    </header>
+
+    <!-- GÜVENLİK ROZETLERİ -->
+    <div class="bg-zinc-900 py-6 border-b border-zinc-800">
+        <div class="max-w-7xl mx-auto px-6 flex flex-wrap justify-center gap-x-12 gap-y-4 text-xs font-medium items-center opacity-75">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-lock text-2xl text-green-400"></i>
+                <div>
+                    <div class="font-semibold">SSL KORUMALI</div>
+                    <div class="text-zinc-500 text-[10px]">256-Bit Şifreleme</div>
+                </div>
+            </div>
+            <div class="h-8 w-px bg-zinc-700"></div>
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-medal text-2xl text-amber-400"></i>
+                <div>
+                    <div class="font-semibold">TÜRSAB ÜYESİ</div>
+                    <div class="text-zinc-500 text-[10px]">Resmi Turizm Acentası</div>
+                </div>
+            </div>
+            <div class="h-8 w-px bg-zinc-700"></div>
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-headset text-2xl text-blue-400"></i>
+                <div>
+                    <div class="font-semibold">7/24 CANLI DESTEK</div>
+                    <div class="text-zinc-500 text-[10px]">WhatsApp + Telefon</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- POPÜLER OTELLER -->
+    <section id="hotels" class="max-w-7xl mx-auto px-6 py-24">
+        <div class="flex justify-between items-end mb-12">
+            <div>
+                <span class="px-4 py-1.5 bg-yellow-400 text-zinc-950 text-xs font-bold rounded-3xl">YENİ</span>
+                <h2 class="text-5xl font-bold tracking-tighter mt-3">Popüler Oteller</h2>
+                <p class="text-zinc-400 text-lg mt-2">Türkiye'nin en iyi 5 yıldızlı otelleri • Rastgele seçilmiş demo ilanlar</p>
+            </div>
+            <a href="#" onclick="alert('Tüm oteller sayfası açılıyor (Demo)')" 
+               class="text-yellow-400 hover:text-yellow-300 flex items-center gap-2 text-sm font-medium">
+                TÜMÜNÜ GÖR <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Otel 1 -->
+            <div class="bg-zinc-900 rounded-3xl overflow-hidden card-hover border border-zinc-800">
+                <div class="relative">
+                    <img src="https://picsum.photos/id/1015/600/400" alt="Antalya Lux Resort" 
+                         class="w-full h-64 object-cover">
+                    <div class="absolute top-4 right-4 secure-badge text-xs px-4 py-1 rounded-3xl flex items-center gap-1 text-green-400">
+                        <i class="fa-solid fa-lock"></i> GÜVENLİ
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="font-semibold text-2xl">Antalya Lux Beach Resort</h3>
+                            <p class="text-zinc-400 text-sm">Antalya • All Inclusive</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="flex items-center gap-1 text-amber-400">
+                                ★★★★☆ <span class="text-zinc-400 text-xs ml-1">(4.87)</span>
+                            </div>
+                            <div class="text-3xl font-bold text-yellow-400 mt-1">3.250 TL</div>
+                            <div class="text-xs text-zinc-500">gece / 2 kişi</div>
+                        </div>
+                    </div>
+                    <button onclick="bookNow(this)" 
+                            class="mt-6 w-full bg-zinc-800 hover:bg-yellow-400 hover:text-zinc-950 transition-all py-4 rounded-2xl font-semibold text-sm tracking-wider">
+                        HEMEN REZERVE ET
+                    </button>
+                </div>
+            </div>
+
+            <!-- Otel 2 -->
+            <div class="bg-zinc-900 rounded-3xl overflow-hidden card-hover border border-zinc-800">
+                <div class="relative">
+                    <img src="https://picsum.photos/id/160/600/400" alt="Istanbul Grand Palace" 
+                         class="w-full h-64 object-cover">
+                    <div class="absolute top-4 right-4 secure-badge text-xs px-4 py-1 rounded-3xl flex items-center gap-1 text-green-400">
+                        <i class="fa-solid fa-lock"></i> GÜVENLİ
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="font-semibold text-2xl">Istanbul Grand Palace</h3>
+                            <p class="text-zinc-400 text-sm">İstanbul • 5 Yıldız</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="flex items-center gap-1 text-amber-400">
+                                ★★★★★ <span class="text-zinc-400 text-xs ml-1">(4.95)</span>
+                            </div>
+                            <div class="text-3xl font-bold text-yellow-400 mt-1">4.800 TL</div>
+                            <div class="text-xs text-zinc-500">gece / 2 kişi</div>
+                        </div>
+                    </div>
+                    <button onclick="bookNow(this)" 
+                            class="mt-6 w-full bg-zinc-800 hover:bg-yellow-400 hover:text-zinc-950 transition-all py-4 rounded-2xl font-semibold text-sm tracking-wider">
+                        HEMEN REZERVE ET
+                    </button>
+                </div>
+            </div>
+
+            <!-- Otel 3 -->
+            <div class="bg-zinc-900 rounded-3xl overflow-hidden card-hover border border-zinc-800">
+                <div class="relative">
+                    <img src="https://picsum.photos/id/201/600/400" alt="Bodrum Marina Hotel" 
+                         class="w-full h-64 object-cover">
+                    <div class="absolute top-4 right-4 secure-badge text-xs px-4 py-1 rounded-3xl flex items-center gap-1 text-green-400">
+                        <i class="fa-solid fa-lock"></i> GÜVENLİ
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="font-semibold text-2xl">Bodrum Marina Suites</h3>
+                            <p class="text-zinc-400 text-sm">Bodrum • Ultra Luxury</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="flex items-center gap-1 text-amber-400">
+                                ★★★★☆ <span class="text-zinc-400 text-xs ml-1">(4.82)</span>
+                            </div>
+                            <div class="text-3xl font-bold text-yellow-400 mt-1">5.650 TL</div>
+                            <div class="text-xs text-zinc-500">gece / 2 kişi</div>
+                        </div>
+                    </div>
+                    <button onclick="bookNow(this)" 
+                            class="mt-6 w-full bg-zinc-800 hover:bg-yellow-400 hover:text-zinc-950 transition-all py-4 rounded-2xl font-semibold text-sm tracking-wider">
+                        HEMEN REZERVE ET
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BUNGALOV - VİLLA - EV -->
+    <section id="villas" class="bg-zinc-900 py-24">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex justify-between items-end mb-12">
+                <div>
+                    <span class="px-4 py-1.5 bg-white/10 text-white text-xs font-bold rounded-3xl">DOĞA İÇİNDE</span>
+                    <h2 class="text-5xl font-bold tracking-tighter mt-3 text-white">Bungalov, Ev &amp; Villa İlanları</h2>
+                    <p class="text-zinc-400 text-lg mt-2">Rastgele demo ilanlar • Hemen rezervasyon yap</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Bungalov 1 -->
+                <div class="bg-zinc-950 rounded-3xl overflow-hidden card-hover border border-zinc-800">
+                    <div class="relative">
+                        <img src="https://picsum.photos/id/251/600/400" alt="Kapadokya Bungalov" 
+                             class="w-full h-64 object-cover">
+                        <div class="absolute top-4 left-4 bg-black/70 text-xs px-3 py-1 rounded-xl">BUNGALOV</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-semibold text-2xl">Kapadokya Balon Bungalov</h3>
+                        <p class="text-zinc-400">Nevşehir • 4 kişi kapasite</p>
+                        <div class="flex justify-between mt-6">
+                            <div>
+                                <div class="text-3xl font-bold text-yellow-400">2.750 TL</div>
+                                <div class="text-xs text-zinc-500">gece</div>
+                            </div>
+                            <button onclick="bookNow(this)" 
+                                    class="bg-white/10 hover:bg-yellow-400 hover:text-zinc-950 px-8 rounded-2xl text-sm font-semibold transition-all">
+                                REZERVE ET
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Villa 1 -->
+                <div class="bg-zinc-950 rounded-3xl overflow-hidden card-hover border border-zinc-800">
+                    <div class="relative">
+                        <img src="https://picsum.photos/id/29/600/400" alt="Marmaris Villa" 
+                             class="w-full h-64 object-cover">
+                        <div class="absolute top-4 left-4 bg-black/70 text-xs px-3 py-1 rounded-xl">VİLLA</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-semibold text-2xl">Marmaris Deniz Villası</h3>
+                        <p class="text-zinc-400">Muğla • Özel havuz • 8 kişi</p>
+                        <div class="flex justify-between mt-6">
+                            <div>
+                                <div class="text-3xl font-bold text-yellow-400">8.900 TL</div>
+                                <div class="text-xs text-zinc-500">gece</div>
+                            </div>
+                            <button onclick="bookNow(this)" 
+                                    class="bg-white/10 hover:bg-yellow-400 hover:text-zinc-950 px-8 rounded-2xl text-sm font-semibold transition-all">
+                                REZERVE ET
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ahşap Ev 1 -->
+                <div class="bg-zinc-950 rounded-3xl overflow-hidden card-hover border border-zinc-800">
+                    <div class="relative">
+                        <img src="https://picsum.photos/id/318/600/400" alt="Karadeniz Ahşap Ev" 
+                             class="w-full h-64 object-cover">
+                        <div class="absolute top-4 left-4 bg-black/70 text-xs px-3 py-1 rounded-xl">AHŞAP EV</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-semibold text-2xl">Karadeniz Doğa Evi</h3>
+                        <p class="text-zinc-400">Rize • Orman manzarası • 6 kişi</p>
+                        <div class="flex justify-between mt-6">
+                            <div>
+                                <div class="text-3xl font-bold text-yellow-400">1.950 TL</div>
+                                <div class="text-xs text-zinc-500">gece</div>
+                            </div>
+                            <button onclick="bookNow(this)" 
+                                    class="bg-white/10 hover:bg-yellow-400 hover:text-zinc-950 px-8 rounded-2xl text-sm font-semibold transition-all">
+                                REZERVE ET
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEDEN BİZ -->
+    <section class="max-w-7xl mx-auto px-6 py-24">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div>
+                <h2 class="text-5xl font-bold tracking-tighter">Neden GüvenTur?</h2>
+                <div class="mt-10 space-y-8">
+                    <div class="flex gap-6">
+                        <div class="w-12 h-12 flex-shrink-0 bg-yellow-400/10 rounded-2xl flex items-center justify-center text-3xl">🔒</div>
+                        <div>
+                            <h4 class="font-semibold text-xl">%100 Güvenli Rezervasyon</h4>
+                            <p class="text-zinc-400">Paran iade garantili. Hiçbir otel veya villa sahibi ön ödeme alamaz.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-6">
+                        <div class="w-12 h-12 flex-shrink-0 bg-yellow-400/10 rounded-2xl flex items-center justify-center text-3xl">⭐</div>
+                        <div>
+                            <h4 class="font-semibold text-xl">Gerçek Misafir Yorumları</h4>
+                            <p class="text-zinc-400">Yapay yorum yok. Sadece gerçek tatil yapmış insanlar yazıyor.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-6">
+                        <div class="w-12 h-12 flex-shrink-0 bg-yellow-400/10 rounded-2xl flex items-center justify-center text-3xl">📍</div>
+                        <div>
+                            <h4 class="font-semibold text-xl">Türkiye'nin Her Yerinde</h4>
+                            <p class="text-zinc-400">Antalya’dan Kapadokya’ya, Bodrum’dan Karadeniz’e 1200+ ilan.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-zinc-900 rounded-3xl p-10 border border-zinc-800">
+                <div class="text-center">
+                    <div class="text-6xl font-bold text-yellow-400">4.98</div>
+                    <div class="text-2xl font-medium mt-2">Ortalama Puan</div>
+                    <div class="flex justify-center gap-1 text-amber-400 text-3xl mt-6">
+                        ★★★★★
+                    </div>
+                    <div class="mt-10 text-xs uppercase tracking-widest text-zinc-500">12.458 mutlu misafir</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-black border-t border-zinc-800">
+        <div class="max-w-7xl mx-auto px-6 pt-20 pb-12">
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-10">
+                <div>
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-8 h-8 bg-yellow-500 rounded-2xl flex items-center justify-center text-zinc-950 font-bold">G</div>
+                        <span class="logo-font text-3xl font-bold tracking-tighter text-white">GüvenTur</span>
+                    </div>
+                    <p class="text-xs text-zinc-400 leading-relaxed">
+                        Bağımsız otel &amp; villa reklam platformu.<br>
+                        2026 © Tüm hakları saklıdır.
+                    </p>
+                </div>
+                
+                <div>
+                    <div class="text-xs font-medium text-zinc-400 mb-4">HIZLI MENÜ</div>
+                    <div class="space-y-3 text-sm">
+                        <div class="cursor-pointer hover:text-yellow-400">Popüler Oteller</div>
+                        <div class="cursor-pointer hover:text-yellow-400">Bungalovlar</div>
+                        <div class="cursor-pointer hover:text-yellow-400">Lüks Villalar</div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="text-xs font-medium text-zinc-400 mb-4">GÜVENLİK</div>
+                    <div class="space-y-3 text-sm">
+                        <div class="cursor-pointer hover:text-yellow-400 flex items-center gap-2">
+                            <i class="fa-solid fa-shield-halved"></i> SSL Koruma
+                        </div>
+                        <div class="cursor-pointer hover:text-yellow-400 flex items-center gap-2">
+                            <i class="fa-solid fa-medal"></i> TÜRSAB
+                        </div>
+                        <div class="cursor-pointer hover:text-yellow-400">İade Garantisi</div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="text-xs font-medium text-zinc-400 mb-4">BİZE ULAŞ</div>
+                    <div class="text-sm space-y-2">
+                        <div>📞 0850 123 45 67</div>
+                        <div>💬 WhatsApp</div>
+                        <div>📧 info@guventur.com</div>
+                    </div>
+                </div>
+                
+                <div class="col-span-2 md:col-span-1">
+                    <div class="bg-zinc-900 rounded-3xl p-6 text-center text-xs">
+                        <i class="fa-solid fa-heart text-red-400 text-2xl mb-3"></i>
+                        <div class="font-medium">GüvenTur ile</div>
+                        <div class="text-zinc-400">Güven içinde tatil yap!</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center text-[10px] text-zinc-500 mt-16">
+                Bu site tamamen demo amaçlıdır • Gerçek rezervasyon yapılmaz • Tüm fotoğraflar rastgele seçilmiştir (picsum.photos)
+            </div>
+        </div>
+    </footer>
+
+    <!-- REZERVASYON MODAL -->
+    <div id="booking-modal" onclick="if(event.target.id==='booking-modal') hideBookingModal()" 
+         class="hidden fixed inset-0 bg-black/80 backdrop-blur-xl z-[9999] flex items-center justify-center">
+        <div onclick="event.stopImmediatePropagation()" 
+             class="modal bg-zinc-900 rounded-3xl max-w-md w-full mx-4 overflow-hidden">
+            <!-- Modal Header -->
+            <div class="px-8 pt-8 pb-4 border-b border-zinc-800 flex items-center justify-between">
+                <div>
+                    <div class="font-semibold text-2xl">Rezervasyon Oluştur</div>
+                    <div class="text-sm text-zinc-400">Demo mod • Gerçek ödeme alınmaz</div>
+                </div>
+                <button onclick="hideBookingModal()" class="text-4xl leading-none text-zinc-400 hover:text-white">×</button>
+            </div>
+            
+            <div class="p-8 space-y-6">
+                <div>
+                    <label class="block text-xs text-zinc-400 mb-2">Seçilen İlan</label>
+                    <div id="modal-hotel-name" class="font-medium text-lg">Antalya Lux Beach Resort</div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-xs text-zinc-400 mb-2">Giriş Tarihi</label>
+                        <input type="date" value="2026-03-15" 
+                               class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-4 text-white">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-zinc-400 mb-2">Çıkış Tarihi</label>
+                        <input type="date" value="2026-03-22" 
+                               class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-4 text-white">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-xs text-zinc-400 mb-2">Kişi Sayısı</label>
+                    <select class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-4">
+                        <option>2 Yetişkin + 0 Çocuk</option>
+                        <option>2 Yetişkin + 1 Çocuk</option>
+                        <option>4 Yetişkin</option>
+                    </select>
+                </div>
+                
+                <div class="bg-zinc-800 rounded-2xl p-5 text-sm">
+                    <div class="flex justify-between mb-3">
+                        <span class="text-zinc-400">7 gece × 3.250 TL</span>
+                        <span class="font-medium">22.750 TL</span>
+                    </div>
+                    <div class="h-px bg-zinc-700 my-3"></div>
+                    <div class="flex justify-between text-xs text-green-400">
+                        <span>İndirim (Demo)</span>
+                        <span>-1.500 TL</span>
+                    </div>
+                    <div class="flex justify-between font-bold text-xl mt-4">
+                        <span>Toplam</span>
+                        <span class="text-yellow-400">21.250 TL</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-8 border-t border-zinc-800 flex gap-4">
+                <button onclick="hideBookingModal()" 
+                        class="flex-1 py-5 border border-zinc-700 rounded-3xl font-medium">
+                    İPTAL
+                </button>
+                <button onclick="completeBooking()" 
+                        class="flex-1 py-5 bg-yellow-400 text-zinc-950 font-semibold rounded-3xl">
+                    REZERVASYONU ONAYLA
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tailwind script çalıştır
+        function initTailwind() {
+            // zaten CDN ile geliyor
+        }
+        
+        // Tema değiştir
+        function toggleTheme() {
+            const html = document.documentElement;
+            const icon = document.getElementById('theme-icon');
+            
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+                localStorage.theme = 'light';
+            } else {
+                html.classList.add('dark');
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+                localStorage.theme = 'dark';
+            }
+        }
+        
+        // Modal fonksiyonları
+        let currentCard = null;
+        
+        function showBookingModal() {
+            document.getElementById('booking-modal').classList.remove('hidden');
+            document.getElementById('booking-modal').classList.add('flex');
+        }
+        
+        function hideBookingModal() {
+            const modal = document.getElementById('booking-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+        
+        function bookNow(btn) {
+            // Kartı bul ve ismi al
+            const card = btn.closest('.bg-zinc-900') || btn.closest('.card-hover');
+            let name = "Seçilen İlan";
+            
+            if (card) {
+                const titleEl = card.querySelector('h3');
+                if (titleEl) name = titleEl.textContent;
+            }
+            
+            document.getElementById('modal-hotel-name').textContent = name;
+            showBookingModal();
+        }
+        
+        function completeBooking() {
+            hideBookingModal();
+            setTimeout(() => {
+                alert('✅ REZERVASYON BAŞARIYLA TAMAMLANDI!\n\nBu sadece bir demo. Gerçek sitede ödeme sayfasına yönlendirilirdin.\n\nTebrikler! 🎉');
+            }, 400);
+        }
+        
+        function searchHotels() {
+            const dest = document.getElementById('search-dest').value || "herhangi bir yer";
+            alert(`Arama yapıldı: ${dest}\n\nDemo sonuçlar gösteriliyor... (Aşağıdaki oteller)`);
+            window.scrollTo({
+                top: document.getElementById('hotels').offsetTop - 80,
+                behavior: 'smooth'
+            });
+        }
+        
+        function smoothScroll(section) {
+            let el;
+            if (section === 'hotels') el = document.getElementById('hotels');
+            else if (section === 'villas') el = document.getElementById('villas');
+            
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+        
+        // Klavye ile modal kapatma
+        document.addEventListener('keydown', function(e) {
+            if (e.key === "Escape") {
+                const modal = document.getElementById('booking-modal');
+                if (!modal.classList.contains('hidden')) hideBookingModal();
+            }
+        });
+        
+        // Sayfa yüklendiğinde
+        window.onload = function() {
+            // Tema kontrolü
+            if (localStorage.theme === 'light') {
+                document.documentElement.classList.remove('dark');
+                document.getElementById('theme-icon').classList.remove('fa-moon');
+                document.getElementById('theme-icon').classList.add('fa-sun');
+            }
+            
+            // Demo için ilk arama kutusuna odak
+            console.log('%c✅ GüvenTur Demo Sitesi Hazır! \nSiyah-beyaz tema, tema tuşu, rastgele fotoğraflar ve güvenli hissi tamamlandı.', 
+                        'color:#eab308; font-family:monospace');
+        };
+    </script>
+</body>
+</html>
