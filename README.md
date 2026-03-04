@@ -1,0 +1,2 @@
+# guventur
+otel rezeversiyon
