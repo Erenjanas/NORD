@@ -1,277 +1,273 @@
 <!DOCTYPE html>
-<html lang="tr" class="dark">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GüvenTur • Güvenli Lüks Tatil</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>Güven Tur - Premium Tatil Deneyimi 2026</title>
     <style>
-        .hero-bg { background-image: url('https://thumbs.dreamstime.com/b/luxury-home-pool-sunset-beautiful-swimming-56923520.jpg'); background-size: cover; background-position: center; }
-        .card-hover { transition: all 0.3s; }
-        .card-hover:hover { transform: translateY(-10px); box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); }
+        :root {
+            --bg: #0a0a0a;
+            --card: #111111;
+            --text: #f0f0f0;
+            --accent: #c9a96e;
+            --accent-dark: #a68a4e;
+        }
+        body {
+            margin: 0;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10,10,10,0.85);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: all 0.4s;
+        }
+        header.scrolled { background: rgba(10,10,10,0.98); }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 5%; }
+        .logo { font-size: 2.8rem; font-weight: 900; color: var(--accent); letter-spacing: 2px; }
+        nav a { color: var(--text); margin: 0 1.8rem; text-decoration: none; font-weight: 500; transition: color 0.3s; }
+        nav a:hover { color: var(--accent); }
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.85));
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            animation: bgFade 30s infinite alternate;
+        }
+        @keyframes bgFade {
+            0% { background-image: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.85)), url('https://media.cntraveller.com/photos/646b250470a21205c2817f04/master/pass/Amanruya,%20Turkey%20-%20Main%20Swimming%20Pool_27493-may23-pr.jpeg'); }
+            33% { background-image: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.85)), url('https://dynamic-media-cdn.tripadvisor.com/media/photo-o/29/79/18/4f/amanruya.jpg?w=700&h=-1&s=1'); }
+            66% { background-image: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.85)), url('https://cf.bstatic.com/xdata/images/hotel/max1024x768/673322330.jpg?k=4190cbb18e0aa1d9b2855ecef9442911aab07a6af1adaf74a7aaffd2d1dc2ba0&o='); }
+            100% { background-image: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.85)), url('https://media.cntraveller.com/photos/646b250470a21205c2817f04/master/pass/Amanruya,%20Turkey%20-%20Main%20Swimming%20Pool_27493-may23-pr.jpeg'); }
+        }
+        .hero h1 { font-size: 6rem; margin: 0; text-shadow: 0 0 30px rgba(201,169,110,0.6); }
+        .hero p { font-size: 2rem; margin: 1rem 0 1rem; }
+        .btn {
+            background: transparent;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            padding: 18px 50px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.5s;
+            position: relative;
+            overflow: hidden;
+            border-radius: 50px;
+        }
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 0; height: 0;
+            background: var(--accent);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.7s;
+        }
+        .btn:hover::before { width: 400px; height: 400px; }
+        .btn:hover { color: #000; box-shadow: 0 0 40px rgba(201,169,110,0.5); }
+        section { padding: 120px 0; }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 2.5rem;
+        }
+        .card {
+            background: var(--card);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.6s ease;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .card:hover { transform: translateY(-20px) scale(1.03); box-shadow: 0 30px 60px rgba(201,169,110,0.25); }
+        .card img { width: 100%; height: 320px; object-fit: cover; transition: transform 1s; loading: lazy; }
+        .card:hover img { transform: scale(1.12); }
+        .card-content { padding: 2rem; }
+        .stars { color: var(--accent); font-size: 1.4rem; margin: 0.5rem 0; }
+        .badge { background: rgba(201,169,110,0.2); color: var(--accent); padding: 0.4rem 1rem; border-radius: 30px; font-size: 0.9rem; display: inline-block; margin-top: 1rem; }
+        .overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); opacity: 0; transition: opacity 0.5s; display: flex; align-items: flex-end; padding: 2rem; justify-content: center; }
+        .card:hover .overlay { opacity: 1; }
+        .contact { background: #000; text-align: center; }
+        footer { background: #050505; padding: 3rem 0; text-align: center; }
+        .social a { color: var(--text); margin: 0 1rem; font-size: 1.8rem; transition: color 0.3s; }
+        .social a:hover { color: var(--accent); }
+        #progress { position: fixed; top: 0; left: 0; height: 4px; background: var(--accent); width: 0%; z-index: 9999; }
     </style>
 </head>
-<body class="bg-zinc-950 text-white font-sans">
+<body>
+    <div id="progress"></div>
 
-<!-- HEADER -->
-<header class="fixed top-0 w-full z-50 bg-zinc-950/80 backdrop-blur-md border-b border-zinc-800">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-            <i class="fa-solid fa-shield-halved text-3xl text-amber-400"></i>
-            <span class="text-2xl font-bold tracking-tight">GÜVENTUR</span>
+    <header id="header">
+        <div class="container" style="display:flex; justify-content:space-between; align-items:center; padding:1.2rem 0;">
+            <div class="logo">GÜVEN TUR</div>
+            <nav>
+                <a href="#oteller">Oteller</a>
+                <a href="#villalar">Villalar</a>
+                <a href="#bungalovlar">Bungalovlar</a>
+                <a href="#iletisim">İletişim</a>
+            </nav>
+            <div onclick="toggleTheme()" style="cursor:pointer; font-size:1.8rem;">☀️/🌙</div>
         </div>
-        
-        <nav class="hidden md:flex gap-8 text-sm font-medium">
-            <a href="#oteller" class="hover:text-amber-400 transition">OTELLER</a>
-            <a href="#turlar" class="hover:text-amber-400 transition">TURLAR</a>
-            <a href="#nedenbiz" class="hover:text-amber-400 transition">NEDEN BİZ?</a>
-            <a href="#iletisim" class="hover:text-amber-400 transition">İLETİŞİM</a>
-        </nav>
-        
-        <div class="flex items-center gap-4">
-            <!-- Tema Tuşu -->
-            <button id="themeToggle" class="flex items-center gap-2 bg-zinc-900 hover:bg-zinc-800 px-5 py-2 rounded-2xl text-sm font-medium border border-zinc-700 transition">
-                <i id="themeIcon" class="fa-solid fa-moon"></i>
-                <span id="themeText">SİYAH / BEYAZ</span>
-            </button>
-            
-            <a href="https://wa.me/16395697826" target="_blank" class="bg-green-600 hover:bg-green-500 px-6 py-2 rounded-2xl text-sm font-medium flex items-center gap-2">
-                <i class="fa-brands fa-whatsapp"></i> WhatsApp
-            </a>
+    </header>
+
+    <div class="hero">
+        <div class="container">
+            <h1>Premium Güvenilir Tatil</h1>
+            <p>2026'nın En Lüks Seçenekleri – Villa, Otel, Bungalov</p>
+            <button class="btn">Rezervasyon Yap</button>
+            <div class="badge" style="margin-top:2rem; font-size:1.2rem;">Ramazan Bayramı'na Özel %20'ye Kadar İndirim</div>
+            <div class="badge" style="margin-top:1rem;">Güven Tur Garantisi: %100 İade + 7/24 Destek</div>
         </div>
     </div>
-</header>
 
-<!-- HERO -->
-<section class="hero-bg h-screen flex items-center relative">
-    <div class="absolute inset-0 bg-black/60"></div>
-    <div class="relative max-w-4xl mx-auto px-6 text-center">
-        <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">TÜRKİYE'NİN EN GÜVENLİ<br>VİLLA & BUNGALOV TATİLLERİ</h1>
-        <p class="text-xl text-zinc-300 mb-10">256 Bit SSL • Gerçek Fotoğraflar • Anında Rezervasyon</p>
-        <a href="#oteller" class="inline-block bg-white text-black px-10 py-4 rounded-3xl font-semibold text-lg hover:bg-amber-400 transition">OTELLERİ İNCELE</a>
-    </div>
-    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center">
-        <p class="text-xs tracking-widest mb-2">GÜVENLE TATİL YAP</p>
-        <i class="fa-solid fa-chevron-down animate-bounce text-2xl"></i>
-    </div>
-</section>
-
-<!-- ÖNE ÇIKAN OTELLER -->
-<section id="oteller" class="py-24 bg-zinc-900">
-    <div class="max-w-7xl mx-auto px-6">
-        <h2 class="text-4xl font-bold text-center mb-4">Öne Çıkan Konaklamalarımız</h2>
-        <p class="text-center text-zinc-400 mb-12">Lüks villa, ahşap bungalov ve mağara odaları – hepsi gerçek fotoğraflarla</p>
-        
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            
-            <!-- OTEL 1 - VILLA OTEL BUNGALOV -->
-            <div class="bg-zinc-950 rounded-3xl overflow-hidden card-hover">
-                <img src="https://thumbs.dreamstime.com/b/nice-villa-pool-garden-tropical-hotel-panoramic-view-ethnic-style-interior-sri-lanka-oct-luxury-backyard-to-relax-164802061.jpg" class="w-full h-64 object-cover">
-                <div class="p-6">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h3 class="text-xl font-semibold">Adesa Villa Bungalov</h3>
-                            <p class="text-amber-400 text-sm">Sapanca • 4.98 ★★★★</p>
-                        </div>
-                        <span class="bg-green-500/10 text-green-400 px-3 py-1 rounded-xl text-xs font-medium">Özel</span>
-                    </div>
-                    <p class="text-zinc-400 text-sm mt-3 line-clamp-2">Göl kenarı özel havuzlu lüks villa ve ahşap bungalovlar, doğa içinde huzur.</p>
-                    <button onclick="openModal(1)" class="mt-6 w-full bg-white text-black py-3 rounded-2xl font-semibold hover:bg-amber-400">Detaylar & Rezervasyon</button>
+    <section id="oteller" class="container">
+        <h2 style="text-align:center; font-size:3.5rem; margin-bottom:4rem;">Lüks Oteller</h2>
+        <div class="grid">
+            <div class="card">
+                <img src="https://media.cntraveller.com/photos/646b250470a21205c2817f04/master/pass/Amanruya,%20Turkey%20-%20Main%20Swimming%20Pool_27493-may23-pr.jpeg" alt="Amanruya Bodrum Infinity Pool">
+                <div class="card-content">
+                    <h3>Amanruya - Bodrum</h3>
+                    <div class="stars">★★★★★ 9.9</div>
+                    <p>Infinity pool, özel plaj, Akdeniz huzuru.</p>
+                    <p><strong>Gece başı ~18.000₺+</strong></p>
+                    <div class="badge">Ramazan Bayramı'na Özel %20'ye Kadar İndirim</div>
                 </div>
+                <div class="overlay"><button class="btn">Rezervasyon Yap</button></div>
             </div>
-            
-            <!-- OTEL 2 -->
-            <div class="bg-zinc-950 rounded-3xl overflow-hidden card-hover">
-                <img src="https://www.uluwaturealestate.com/wp-content/uploads/2025/11/5241b825d6d199e25f352f3a55f6ef36_643b8cc367_1920-original.jpg" class="w-full h-64 object-cover">
-                <div class="p-6">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h3 class="text-xl font-semibold">Lujo Beach Villa</h3>
-                            <p class="text-amber-400 text-sm">Bodrum • 4.95 ★★★★</p>
-                        </div>
-                    </div>
-                    <p class="text-zinc-400 text-sm mt-3 line-clamp-2">Denize sıfır ultra lüks villa, sonsuzluk havuzu ve özel plaj alanı.</p>
-                    <button onclick="openModal(2)" class="mt-6 w-full bg-white text-black py-3 rounded-2xl font-semibold hover:bg-amber-400">Detaylar & Rezervasyon</button>
+            <div class="card">
+                <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/29/79/18/4f/amanruya.jpg?w=700&h=-1&s=1" alt="Amanruya Cottage Pool">
+                <div class="card-content">
+                    <h3>Amanruya Cottage Pool</h3>
+                    <div class="stars">★★★★★ 9.8</div>
+                    <p>Özel havuzlu taş cottage'lar, doğa içinde.</p>
+                    <p><strong>Gece başı ~22.000₺+</strong></p>
+                    <div class="badge">Ramazan Bayramı'na Özel %20'ye Kadar İndirim</div>
                 </div>
+                <div class="overlay"><button class="btn">Rezervasyon Yap</button></div>
             </div>
-            
-            <!-- OTEL 3 -->
-            <div class="bg-zinc-950 rounded-3xl overflow-hidden card-hover">
-                <img src="https://images.trvl-media.com/lodging/58000000/57930000/57929700/57929603/99e18c57.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill" class="w-full h-64 object-cover">
-                <div class="p-6">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h3 class="text-xl font-semibold">Crystal Cave Suite</h3>
-                            <p class="text-amber-400 text-sm">Kapadokya • 4.97 ★★★★</p>
-                        </div>
-                    </div>
-                    <p class="text-zinc-400 text-sm mt-3 line-clamp-2">Mağara içinde lüks suit, peri bacaları manzaralı romantik oda.</p>
-                    <button onclick="openModal(3)" class="mt-6 w-full bg-white text-black py-3 rounded-2xl font-semibold hover:bg-amber-400">Detaylar & Rezervasyon</button>
+            <div class="card">
+                <img src="https://images.trvl-media.com/lodging/13000000/12240000/12238200/12238140/d766bfa0.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill" alt="Çırağan Palace Boğaz Suit">
+                <div class="card-content">
+                    <h3>Çırağan Palace - İstanbul</h3>
+                    <div class="stars">★★★★★ 9.7</div>
+                    <p>Boğaz manzaralı saray suit'leri.</p>
+                    <p><strong>Gece başı ~25.000₺+</strong></p>
+                    <div class="badge">Ramazan Bayramı'na Özel %20'ye Kadar İndirim</div>
                 </div>
-            </div>
-            
-            <!-- OTEL 4 -->
-            <div class="bg-zinc-950 rounded-3xl overflow-hidden card-hover">
-                <img src="https://assets.hyatt.com/content/dam/hyatt/hyattdam/images/2025/09/04/0834/NCEHR-P0924-New-Sea-View-Room-King.jpg/NCEHR-P0924-New-Sea-View-Room-King.16x9.jpg?imwidth=1920" class="w-full h-64 object-cover">
-                <div class="p-6">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h3 class="text-xl font-semibold">Premium Otel Odası</h3>
-                            <p class="text-amber-400 text-sm">Antalya • 4.94 ★★★★</p>
-                        </div>
-                    </div>
-                    <p class="text-zinc-400 text-sm mt-3 line-clamp-2">Deniz manzaralı modern lüks otel odası, her detayı düşünülmüş konfor.</p>
-                    <button onclick="openModal(4)" class="mt-6 w-full bg-white text-black py-3 rounded-2xl font-semibold hover:bg-amber-400">Detaylar & Rezervasyon</button>
-                </div>
+                <div class="overlay"><button class="btn">Rezervasyon Yap</button></div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- MODAL -->
-<div id="modal" class="hidden fixed inset-0 bg-black/80 z-[999] flex items-center justify-center">
-    <div id="modalContent" class="bg-zinc-900 rounded-3xl max-w-2xl w-full mx-4 overflow-hidden">
-        <!-- JS ile dolduruluyor -->
-    </div>
-</div>
-
-<!-- TÜRLER (aynı kaldı, kısaca) -->
-<section id="turlar" class="py-24 bg-black">
-    <div class="max-w-7xl mx-auto px-6 text-center">
-        <h2 class="text-4xl font-bold mb-12">Popüler Paketlerimiz</h2>
-        <div class="grid md:grid-cols-3 gap-8">
-            <div class="bg-zinc-900 p-8 rounded-3xl">Kapadokya Balon + Mağara Konaklama</div>
-            <div class="bg-zinc-900 p-8 rounded-3xl">Sapanca Göl + Villa Deneyimi</div>
-            <div class="bg-zinc-900 p-8 rounded-3xl">Bodrum Deniz + Lüks Villa</div>
-        </div>
-    </div>
-</section>
-
-<!-- NEDEN BİZ (aynı) -->
-<section id="nedenbiz" class="py-24 bg-zinc-900">
-    <div class="max-w-7xl mx-auto px-6">
-        <h2 class="text-4xl font-bold text-center mb-12">Neden GüvenTur?</h2>
-        <div class="grid md:grid-cols-3 gap-10 text-center">
-            <div><i class="fa-solid fa-shield-halved text-5xl text-amber-400 mb-4"></i><p class="font-semibold">256 Bit SSL Güvenliği</p></div>
-            <div><i class="fa-solid fa-medal text-5xl text-amber-400 mb-4"></i><p class="font-semibold">Turizm Bakanlığı Onaylı</p></div>
-            <div><i class="fa-solid fa-users text-5xl text-amber-400 mb-4"></i><p class="font-semibold">4.96 Ortalama Puan</p></div>
-        </div>
-    </div>
-</section>
-
-<!-- İLETİŞİM (aynı) -->
-<section id="iletisim" class="py-24 bg-black">
-    <div class="max-w-4xl mx-auto px-6">
-        <h2 class="text-4xl font-bold text-center mb-12">Bize Ulaşın</h2>
-        
-        <div class="grid md:grid-cols-2 gap-12">
-            <form id="contactForm" class="space-y-6">
-                <input type="text" id="name" placeholder="Adınız Soyadınız" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl px-6 py-4 focus:outline-none">
-                <input type="email" id="email" placeholder="E-posta adresiniz" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl px-6 py-4 focus:outline-none">
-                <textarea id="message" rows="5" placeholder="Mesajınız..." class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl px-6 py-4 focus:outline-none"></textarea>
-                <button type="submit" class="w-full bg-amber-400 hover:bg-white hover:text-black text-black py-4 rounded-3xl font-semibold">Gönder</button>
-            </form>
-            
-            <div class="space-y-6">
-                <a href="https://wa.me/16395697826" target="_blank" class="flex items-center gap-5 bg-green-600 hover:bg-green-500 p-6 rounded-3xl">
-                    <i class="fa-brands fa-whatsapp text-4xl"></i>
-                    <div>
-                        <p class="font-semibold">WhatsApp</p>
-                        <p class="text-sm">+1 (639) 569-7826</p>
-                    </div>
-                </a>
-                
-                <a href="https://t.me/ihtiyarlandi" target="_blank" class="flex items-center gap-5 bg-blue-600 hover:bg-blue-500 p-6 rounded-3xl">
-                    <i class="fa-brands fa-telegram text-4xl"></i>
-                    <div>
-                        <p class="font-semibold">Telegram</p>
-                        <p class="text-sm">@ihtiyarlandi</p>
-                    </div>
-                </a>
-                
-                <div class="bg-zinc-900 p-8 rounded-3xl text-center">
-                    <p class="text-amber-400 font-medium">7/24 Canlı Destek</p>
-                    <p class="text-sm text-zinc-400 mt-2">Anında dönüş garantisi</p>
+    <section id="villalar" class="container">
+        <h2 style="text-align:center; font-size:3.5rem; margin-bottom:4rem;">Lüks Villalar</h2>
+        <div class="grid">
+            <div class="card">
+                <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/673322330.jpg?k=4190cbb18e0aa1d9b2855ecef9442911aab07a6af1adaf74a7aaffd2d1dc2ba0&o=" alt="Kalkan Infinity Pool Villa">
+                <div class="card-content">
+                    <h3>Infinity Pool Villa - Kalkan</h3>
+                    <div class="stars">★★★★★ 9.8</div>
+                    <p>Panoramik deniz manzarası, özel havuz.</p>
+                    <p><strong>Haftalık ~60.000₺+</strong></p>
+                    <div class="badge">Ramazan Bayramı'na Özel %20'ye Kadar İndirim</div>
                 </div>
+                <div class="overlay"><button class="btn">Rezervasyon Yap</button></div>
+            </div>
+            <div class="card">
+                <img src="https://media.vrbo.com/lodging/31000000/30750000/30745800/30745716/4d471eda.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill" alt="Kalkan Sunset Villa">
+                <div class="card-content">
+                    <h3>Sunset View Villa - Kalkan</h3>
+                    <div class="stars">★★★★★ 9.9</div>
+                    <p>Gün batımı efsane, jakuzi + BBQ.</p>
+                    <p><strong>Haftalık ~55.000₺+</strong></p>
+                    <div class="badge">Ramazan Bayramı'na Özel %20'ye Kadar İndirim</div>
+                </div>
+                <div class="overlay"><button class="btn">Rezervasyon Yap</button></div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- FOOTER -->
-<footer class="bg-zinc-950 py-12 border-t border-zinc-800">
-    <div class="max-w-7xl mx-auto px-6 text-center text-xs text-zinc-500">
-        © 2026 GüvenTur • Tüm hakları saklıdır • Güvenli Ödeme • SSL Korumalı
-    </div>
-</footer>
-
-<script>
-// Tema Toggle
-const themeToggle = document.getElementById('themeToggle');
-const themeIcon = document.getElementById('themeIcon');
-const themeText = document.getElementById('themeText');
-
-function setTheme(dark) {
-    if (dark) {
-        document.documentElement.classList.add('dark');
-        themeIcon.classList.remove('fa-sun');
-        themeIcon.classList.add('fa-moon');
-        themeText.textContent = "SİYAH / BEYAZ";
-    } else {
-        document.documentElement.classList.remove('dark');
-        themeIcon.classList.remove('fa-moon');
-        themeIcon.classList.add('fa-sun');
-        themeText.textContent = "BEYAZ / SİYAH";
-    }
-}
-
-themeToggle.addEventListener('click', () => {
-    const isDark = document.documentElement.classList.contains('dark');
-    setTheme(!isDark);
-    localStorage.setItem('theme', !isDark ? 'dark' : 'light');
-});
-
-if (localStorage.getItem('theme') === 'light') setTheme(false);
-
-// Modal Hotels
-const hotels = [
-    {name:"Adesa Villa Bungalov - Sapanca", desc:"Göl manzaralı özel havuzlu lüks villa ve ahşap bungalovlar. Romantik ve huzurlu tatil.", img:"https://a0.muscache.com/im/pictures/hosting/Hosting-50336656/original/5864b425-509c-4b60-8390-8de5745dfeaf.png", price:"2.950 TL / gece"},
-    {name:"Lujo Beach Villa - Bodrum", desc:"Denize sıfır ultra lüks villa, özel plaj ve infinity havuz keyfi.", img:"https://www.uluwaturealestate.com/wp-content/uploads/2025/11/5241b825d6d199e25f352f3a55f6ef36_643b8cc367_1920-original.jpg", price:"6.200 TL / gece"},
-    {name:"Crystal Cave Suite - Kapadokya", desc:"Peri bacaları manzaralı mağara suit, lüks ve mistik deneyim.", img:"https://images.trvl-media.com/lodging/58000000/57930000/57929700/57929603/99e18c57.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill", price:"4.800 TL / gece"},
-    {name:"Premium Otel Odası - Antalya", desc:"Modern tasarım, deniz manzaralı geniş oda, üst düzey konfor.", img:"https://assets.hyatt.com/content/dam/hyatt/hyattdam/images/2025/09/04/0834/NCEHR-P0924-New-Sea-View-Room-King.jpg/NCEHR-P0924-New-Sea-View-Room-King.16x9.jpg?imwidth=1920", price:"3.450 TL / gece"}
-];
-
-function openModal(id) {
-    const h = hotels[id-1];
-    document.getElementById('modalContent').innerHTML = `
-        <img src="${h.img}" class="w-full h-80 object-cover">
-        <div class="p-8">
-            <h3 class="text-3xl font-bold">${h.name}</h3>
-            <p class="text-amber-400 text-2xl mt-2">${h.price}</p>
-            <p class="mt-6 text-zinc-300">${h.desc}</p>
-            <button onclick="bookNow()" class="mt-10 w-full bg-green-500 hover:bg-green-600 py-4 rounded-3xl font-semibold">Şimdi Rezervasyon Yap (WhatsApp)</button>
-            <button onclick="closeModal()" class="mt-4 w-full text-zinc-400">Kapat</button>
+    <section id="bungalovlar" class="container">
+        <h2 style="text-align:center; font-size:3.5rem; margin-bottom:4rem;">Doğa Bungalovları</h2>
+        <div class="grid">
+            <div class="card">
+                <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/543545923.jpg?k=1a2f522434d5bfc656fb75f786da268e400b975d7387291987588732c8a2642e&o=" alt="Çamlıhemşin Jacuzzi Bungalov">
+                <div class="card-content">
+                    <h3>Jacuzzi Bungalov - Çamlıhemşin</h3>
+                    <div class="stars">★★★★★ 9.7</div>
+                    <p>Dağ manzaralı jakuzi, nehir sesi.</p>
+                    <p><strong>Gece başı ~6.000₺+</strong></p>
+                    <div class="badge">Ramazan Bayramı'na Özel %20'ye Kadar İndirim</div>
+                </div>
+                <div class="overlay"><button class="btn">Rezervasyon Yap</button></div>
+            </div>
+            <div class="card">
+                <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-886997524129476501/original/39b9c538-b43a-4f55-899f-b66b34f43249.jpeg" alt="Rize Nature Jacuzzi Bungalov">
+                <div class="card-content">
+                    <h3>Doğa Jakuzili Bungalov - Rize</h3>
+                    <div class="stars">★★★★★ 9.8</div>
+                    <p>Orman içinde huzur, özel spa.</p>
+                    <p><strong>Gece başı ~5.500₺+</strong></p>
+                    <div class="badge">Ramazan Bayramı'na Özel %20'ye Kadar İndirim</div>
+                </div>
+                <div class="overlay"><button class="btn">Rezervasyon Yap</button></div>
+            </div>
         </div>
-    `;
-    document.getElementById('modal').classList.remove('hidden');
-}
+    </section>
 
-function closeModal() {
-    document.getElementById('modal').classList.add('hidden');
-}
+    <section id="iletisim" class="contact container">
+        <h2 style="font-size:3.5rem;">Bize Ulaşın</h2>
+        <p style="font-size:1.5rem; margin:2rem 0;">WhatsApp: <a href="https://wa.me/16395697826" style="color:var(--accent); text-decoration:none;">+1 (639) 569-7826</a></p>
+        <p style="font-size:1.5rem;">Telegram: <a href="https://t.me/ihtiyarlandi" style="color:var(--accent); text-decoration:none;">@ihtiyarlandi</a></p>
+        <form style="max-width:600px; margin:3rem auto;">
+            <input type="text" placeholder="Adınız" required style="width:100%; padding:1.2rem; margin:1rem 0; background:#1a1a1a; border:1px solid #333; color:#fff; border-radius:10px;">
+            <input type="email" placeholder="E-posta" required style="width:100%; padding:1.2rem; margin:1rem 0; background:#1a1a1a; border:1px solid #333; color:#fff; border-radius:10px;">
+            <textarea placeholder="Mesajınız" required style="width:100%; padding:1.2rem; margin:1rem 0; background:#1a1a1a; border:1px solid #333; color:#fff; border-radius:10px; height:150px;"></textarea>
+            <button class="btn" type="submit" style="width:100%;">Gönder</button>
+        </form>
+    </section>
 
-function bookNow() {
-    closeModal();
-    alert("✅ Talebiniz alındı! Hemen WhatsApp'tan müsaitlik ve fiyat bilgisi gönderiyoruz.");
-}
+    <footer>
+        <div class="container">
+            <p>© 2026 Güven Tur - Eren Özel Tasarım. Tüm hakları saklıdır.</p>
+            <div class="social">
+                <a href="#">📱</a><a href="#">📸</a><a href="#">🐦</a>
+            </div>
+            <div style="margin-top:1rem; font-size:0.9rem; color:#888;">SSL Güvenli | 100% Memnuniyet Garantisi</div>
+        </div>
+    </footer>
 
-// Form
-document.getElementById('contactForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    alert("✅ Mesajınız bize ulaştı! En kısa sürede dönüş yapacağız.");
-    this.reset();
-});
-</script>
+    <script>
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            document.getElementById('progress').style.width = (winScroll / height) * 100 + '%';
+            document.getElementById('header').classList.toggle('scrolled', winScroll > 50);
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        function toggleTheme() {
+            document.body.style.background = document.body.style.background === 'white' ? '#0a0a0a' : 'white';
+            document.body.style.color = document.body.style.color === 'black' ? '#f0f0f0' : 'black';
+        }
+    </script>
 </body>
 </html>
