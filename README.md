@@ -1,2 +1,2 @@
-# guventur
-otel rezeversiyon
+NORD
+ÖZEL SİTE
