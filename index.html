@@ -845,19 +845,10 @@
             console.log('Audio readyState:', audioPlayer.readyState);
             console.log('Audio src:', audioPlayer.currentSrc);
         });
+        git add .
+git commit -m "Vercel analytics eklendi"
+git push origin main
     </script>
-    import type { AppProps } from 'next/app';
-import { Analytics } from '@vercel/analytics/next';
- 
-function MyApp({ Component, pageProps }: AppProps) {
-  return (
-    <>
-      <Component {...pageProps} />
-      <Analytics />
-    </>
-  );
-}
- 
-export default MyApp;
+    
 </body>
 </html>
